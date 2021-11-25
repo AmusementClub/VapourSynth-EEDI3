@@ -16,8 +16,8 @@ endif
 sources = files('EEDI3/EEDI3.cpp')
 
 if gcc_syntax
-  vapoursynth_dep = dependency('vapoursynth', version: '>=55').partial_dependency(compile_args: true, includes: true)
-  install_dir = vapoursynth_dep.get_variable(pkgconfig: 'libdir') / 'vapoursynth'
+  vapoursynth_dep = [] #dependency('vapoursynth', version: '>=55').partial_dependency(compile_args: true, includes: true)
+  #install_dir = vapoursynth_dep.get_variable(pkgconfig: 'libdir') / 'vapoursynth'
 else
   vapoursynth_dep = []
   install_dir = get_option('libdir') / 'vapoursynth'
@@ -53,6 +53,6 @@ shared_module('eedi3m',
   dependencies: vapoursynth_dep,
   link_with: libs,
   install: true,
-  install_dir: install_dir,
+  #install_dir: install_dir,
   gnu_symbol_visibility: 'hidden',
 )
