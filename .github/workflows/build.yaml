@@ -28,11 +28,11 @@ jobs:
       - name: download VS headers and patch header location
         shell: bash
         run: |
-          git clone https://github.com/vapoursynth/vapoursynth --depth=1 --branch R54
+          git clone https://github.com/vapoursynth/vapoursynth --depth=1 --branch R72
           cp vapoursynth/include/*.h EEDI3
-          sed -i -e '/#include <V/y|<>|""|' EEDI3/shared.hpp
+          sed -i -e '/#include <V/y|<>|""|' EEDI3/EEDI3.h
       - name: Meson setup
-        run: meson setup builddir/ -Db_vscrt=mt -Dopencl=false
+        run: meson setup builddir/ -Db_vscrt=mt
       - name: Meson compile
         run: meson compile -C builddir/ -v
       - name: Upload artifact
