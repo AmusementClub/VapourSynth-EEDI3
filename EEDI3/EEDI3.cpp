@@ -782,4 +782,30 @@ VS_EXTERNAL_API(void) VapourSynthPluginInit2(VSPlugin* plugin, const VSPLUGINAPI
                              eedi3Create,
                              nullptr,
                              plugin);
+
+    vspapi->registerFunction("EEDI3CL",
+                             "clip:clip;"
+                             "field:int;"
+                             "dh:int:opt;"
+                             "planes:int[]:opt;"
+                             "alpha:float:opt;"
+                             "beta:float:opt;"
+                             "gamma:float:opt;"
+                             "nrad:int:opt;"
+                             "mdis:int:opt;"
+                             "hp:int:opt;"
+                             "ucubic:int:opt;"
+                             "cost3:int:opt;"
+                             "vcheck:int:opt;"
+                             "vthresh0:float:opt;"
+                             "vthresh1:float:opt;"
+                             "vthresh2:float:opt;"
+                             "sclip:clip:opt;"
+                             "opt:int:opt;"
+                             "device:int:opt;"
+                             "list_device:int:opt;"
+                             "info:int:opt;",
+                             eedi3Create,
+                             nullptr,
+                             plugin);
 }
