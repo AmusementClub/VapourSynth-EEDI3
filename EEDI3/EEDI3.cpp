@@ -805,6 +805,7 @@ VS_EXTERNAL_API(void) VapourSynthPluginInit2(VSPlugin* plugin, const VSPLUGINAPI
                              "device:int:opt;"
                              "list_device:int:opt;"
                              "info:int:opt;",
+                             "clip:vnode;",
                              eedi3Create,
                              nullptr,
                              plugin);
