@@ -23,8 +23,8 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: '3.x'
-      - name: install meson and ninja
-        run: pip install meson ninja
+      - name: install cmake and ninja
+        run: pip install cmake ninja
       - name: download VS headers and patch header location
         shell: bash
         run: |
@@ -36,14 +36,11 @@ jobs:
         run: |
           curl -s -o llvm-win64.exe -LJO https://github.com/llvm/llvm-project/releases/download/llvmorg-21.1.1/LLVM-21.1.1-win64.exe
           7z x -ollvm llvm-win64.exe
-      - name: Meson setup
-        shell: bash
-        run: |
-          export CXX="$(pwd)/llvm/bin/clang++.exe"
-          export AR="$(pwd)/llvm/bin/llvm-ar.exe"
-          meson setup builddir/ -Db_vscrt=mt -Dopencl=false
-      - name: Meson compile
-        run: meson compile -C builddir/ -v
+      - name: CMake setup
+        shell: cmd
+        run: cmake -S . -B builddir -G Ninja -D CMAKE_BUILD_TYPE=Release -D CMAKE_CXX_COMPILER="%cd%\llvm\bin\clang++.exe" -D CMAKE_MSVC_RUNTIME_LIBRARY=MultiThreaded
+      - name: CMake compile
+        run: cmake --build builddir --verbose
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
