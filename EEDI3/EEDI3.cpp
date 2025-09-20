@@ -791,13 +791,13 @@ extern void VS_CC eedi3clCreate(const VSMap * in, VSMap * out, void * userData, 
 VS_EXTERNAL_API(void) VapourSynthPluginInit(VSConfigPlugin configFunc, VSRegisterFunction registerFunc, VSPlugin * plugin) {
     configFunc("com.holywu.eedi3", "eedi3m", "Enhanced Edge Directed Interpolation 3", VAPOURSYNTH_API_VERSION, 1, plugin);
 
-#ifndef HAVE_OPENCL
-#ifdef _WIN32
-    // Co-exist with OpenCL enabled eedi3m.dll.
-    HANDLE h = LoadLibraryW(L"OpenCL.dll");
-    if (h) return;
-#endif
-#endif
+// #ifndef HAVE_OPENCL
+// #ifdef _WIN32
+//     // Co-exist with OpenCL enabled eedi3m.dll.
+//     HANDLE h = LoadLibraryW(L"OpenCL.dll");
+//     if (h) return;
+// #endif
+// #endif
 
     registerFunc("EEDI3",
                  "clip:clip;"
