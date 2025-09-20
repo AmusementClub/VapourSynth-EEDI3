@@ -4,7 +4,7 @@ project('EEDI3', 'cpp',
   version : '5'
 )
 
-add_project_arguments('/fp:fast', language : 'cpp')
+add_project_arguments('-ffast-math', language : 'cpp')
 
 sources = [
   'EEDI3/EEDI3.cpp',
@@ -20,7 +20,7 @@ deps = [vapoursynth_dep]
 libs = []
 
 if host_machine.cpu_family().startswith('x86')
-  add_project_arguments('-DVS_TARGET_CPU_X86', '/arch:AVX', language : 'cpp')
+  add_project_arguments('-DVS_TARGET_CPU_X86', '-march=x86-64-v3', language : 'cpp')
 
   sources += [
     'EEDI3/EEDI3_SSE2.cpp',
@@ -58,19 +58,19 @@ if host_machine.cpu_family().startswith('x86')
 
   libs += static_library('sse4', 'EEDI3/EEDI3_SSE4.cpp',
     dependencies : vapoursynth_dep,
-    cpp_args : ['/arch:AVX'],
+    cpp_args : ['-march=x86-64-v3'],
     gnu_symbol_visibility : 'hidden'
   )
 
   libs += static_library('avx', 'EEDI3/EEDI3_AVX.cpp',
     dependencies : vapoursynth_dep,
-    cpp_args : ['/arch:AVX'],
+    cpp_args : ['-march=x86-64-v3'],
     gnu_symbol_visibility : 'hidden'
   )
 
   libs += static_library('avx512', 'EEDI3/EEDI3_AVX512.cpp',
     dependencies : vapoursynth_dep,
-    cpp_args : ['/arch:AVX512'],
+    cpp_args : ['-march=x86-64-v4'],
     gnu_symbol_visibility : 'hidden'
   )
 endif
