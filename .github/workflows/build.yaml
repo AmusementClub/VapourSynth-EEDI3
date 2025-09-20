@@ -12,7 +12,7 @@ jobs:
       matrix:
         arch:
           - amd64
-          - x86
+          # - x86
     steps:
       - uses: actions/checkout@v4
       - name: setup MS dev commands
@@ -31,8 +31,16 @@ jobs:
           git clone https://github.com/vapoursynth/vapoursynth --depth=1 --branch R54
           cp vapoursynth/include/*.h EEDI3
           sed -i -e '/#include <V/y|<>|""|' EEDI3/shared.hpp
+      - name: Setup LLVM
+        shell: bash
+        run: |
+          curl -s -o llvm-win64.exe -LJO https://github.com/llvm/llvm-project/releases/download/llvmorg-21.1.1/LLVM-21.1.1-win64.exe
+          7z x -ollvm llvm-win64.exe
       - name: Meson setup
-        run: meson setup builddir/ -Db_vscrt=mt -Dopencl=false
+        shell: bash
+        run: |
+          export CXX="$(pwd)/llvm/bin/clang++.exe"
+          meson setup builddir/ -Db_vscrt=mt -Dopencl=false
       - name: Meson compile
         run: meson compile -C builddir/ -v
       - name: Upload artifact
