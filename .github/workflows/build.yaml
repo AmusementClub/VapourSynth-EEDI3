@@ -1,9 +1,13 @@
 name: Build
 on:
-  - push
-  - release
-  - pull_request
-  - workflow_dispatch
+  push:
+  release:
+  pull_request:
+  workflow_dispatch:
+      inputs:
+        tag:
+          description: 'which tag to upload to'
+          default: ''
 
 jobs:
   build:
@@ -14,13 +18,13 @@ jobs:
           - amd64
           - x86
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: setup MS dev commands
         uses: ilammy/msvc-dev-cmd@v1
         with:
           arch: ${{ matrix.arch }}
       - name: Setup Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version: '3.x'
       - name: install meson and ninja
@@ -41,3 +45,12 @@ jobs:
           name: release-${{matrix.arch}}
           path: |
             builddir/*.dll
+      - name: Release
+        uses: softprops/action-gh-release@v2
+        if: github.event_name == 'workflow_dispatch' && github.event.inputs.tag != ''
+        with:
+          tag_name: ${{ github.event.inputs.tag }}
+          files: builddir/*.dll
+          fail_on_unmatched_files: true
+          generate_release_notes: false
+          prerelease: true
