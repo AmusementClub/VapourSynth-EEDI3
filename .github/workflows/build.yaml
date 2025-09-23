@@ -1,13 +1,11 @@
 name: Build
 on:
   push:
-  release:
-  pull_request:
   workflow_dispatch:
-      inputs:
-        tag:
-          description: 'which tag to upload to'
-          default: ''
+    inputs:
+      tag:
+        description: 'which tag to upload to'
+        default: ''
 
 jobs:
   build:
@@ -45,12 +43,17 @@ jobs:
           name: release-${{matrix.arch}}
           path: |
             builddir/*.dll
+      - name: Build release
+        shell: bash
+        run: |
+          mv builddir/eedi3m.dll .
+          7z a -bb3 -mx=9 release-${{ matrix.arch }}.7z eedi3m.dll
       - name: Release
         uses: softprops/action-gh-release@v2
         if: github.event_name == 'workflow_dispatch' && github.event.inputs.tag != ''
         with:
           tag_name: ${{ github.event.inputs.tag }}
-          files: builddir/*.dll
+          files: release-${{ matrix.arch }}.7z
           fail_on_unmatched_files: true
           generate_release_notes: false
           prerelease: true
